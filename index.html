@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ToDo</title>
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ToDo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>ToDo</h1>
+  <button id="settingsBtn" class="icon-btn" aria-label="設定">⚙</button>
+</header>
+
+<section class="entry">
+  <div class="entry-row">
+    <textarea id="input" rows="2" placeholder="ひらめいたことを入力&#10;例: 明日までにA社に見積もり 至急" enterkeyhint="done"></textarea>
+    <button id="micBtn" class="mic" aria-label="音声で入力">🎤</button>
+  </div>
+  <div class="entry-row">
+    <div id="preview" class="chips"></div>
+    <button id="addBtn" class="primary">追加</button>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist">
+  <button data-tab="today" class="tab active">今日 <span class="count" id="cToday"></span></button>
+  <button data-tab="overdue" class="tab">期限切れ <span class="count" id="cOverdue"></span></button>
+  <button data-tab="all" class="tab">すべて <span class="count" id="cAll"></span></button>
+</nav>
+
+<main>
+  <ul id="list" class="list"></ul>
+  <p id="empty" class="empty" hidden></p>
+</main>
+
+<div id="toast" class="toast" hidden></div>
+
+<!-- 編集 -->
+<div id="editDlg" class="dlg" hidden>
+  <div class="dlg-box">
+    <h2>編集</h2>
+    <label>やること<input id="eTitle" type="text"></label>
+    <label>期限
+      <span class="row"><input id="eDue" type="date"><button id="eDueClear" class="small">なし</button></span>
+    </label>
+    <div class="label">優先度
+      <div class="seg" id="ePriority">
+        <button data-p="high">高</button><button data-p="normal">通常</button><button data-p="low">低</button>
+      </div>
+    </div>
+    <label>取引先・案件<input id="eCustomer" type="text" list="customerList"></label>
+    <label>メモ<textarea id="eMemo" rows="3"></textarea></label>
+    <div class="dlg-actions">
+      <button id="eDelete" class="danger">削除</button>
+      <span class="spacer"></span>
+      <button id="eCancel">閉じる</button>
+      <button id="eSave" class="primary">保存</button>
+    </div>
+  </div>
+</div>
+<datalist id="customerList"></datalist>
+
+<!-- 設定 -->
+<div id="setDlg" class="dlg" hidden>
+  <div class="dlg-box">
+    <h2>設定</h2>
+    <div class="label">取引先リスト
+      <small>1行に1社。「正式名: 呼び方, 呼び方」の形で書きます。入力した言葉に呼び方が入っていると、その取引先が付きます。</small>
+      <textarea id="sCustomers" rows="10"></textarea>
+      <small>取引先リストのファイル（todo-customers.json）は、下の「読み込む」で入れられます。</small>
+      <span class="row"><button id="sCustomersSave" class="primary small">取引先を保存</button></span>
+    </div>
+    <div class="label">バックアップ
+      <small>ToDo と取引先リストは、この端末のこのブラウザの中だけに保存されています（パソコンと iPhone は別々です）。ときどき書き出しておくと安心です。</small>
+      <span class="row"><button id="sExport" class="small">書き出す</button><button id="sImport" class="small">読み込む</button></span>
+      <input id="sImportFile" type="file" accept="application/json,.json" hidden>
+    </div>
+    <div class="dlg-actions"><span class="spacer"></span><button id="sClose">閉じる</button></div>
+  </div>
+</div>
+
+<script src="parser.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
