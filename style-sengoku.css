@@ -1,0 +1,209 @@
+/* 戦国風の見た目。元の見た目は style.css（index.html の読み込み先を戻せば元どおり） */
+:root {
+  --paper: rgba(246, 236, 214, .94);
+  --paper-solid: #f3e6c8;
+  --ink: #1d1410;
+  --sub: #6b5640;
+  --line: #8a6a3e;
+  --shu: #b3261e;        /* 朱 */
+  --shu-dark: #7d1510;
+  --gold: #c9a14a;
+  --gold-light: #ecd08a;
+  --lacquer: #120c0a;    /* 漆 */
+  --low: #8b7a66;
+  --chip: rgba(179, 38, 30, .1);
+  --brush: "Yuji Syuku", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --mincho: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+html { background: #07050c; }
+body {
+  background: transparent;
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+  font-size: 16px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));
+  min-height: 100vh;
+}
+
+/* 背景: 夜の合戦場（iPhone では background-attachment: fixed が効かないので固定の層を使う） */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0) 70%, rgba(0,0,0,.4) 100%),
+    url("bg-sengoku.svg") center bottom / cover no-repeat,
+    #07050c;
+}
+/* 舞い上がる火の粉 */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 10% 90%, #ffb347, transparent),
+    radial-gradient(1.5px 1.5px at 25% 70%, #ff7a2a, transparent),
+    radial-gradient(2px 2px at 40% 85%, #ffd27a, transparent),
+    radial-gradient(1.5px 1.5px at 55% 60%, #ff7a2a, transparent),
+    radial-gradient(2.5px 2.5px at 70% 80%, #ffb347, transparent),
+    radial-gradient(1.5px 1.5px at 85% 65%, #ffd27a, transparent),
+    radial-gradient(2px 2px at 95% 92%, #ff7a2a, transparent),
+    radial-gradient(1.5px 1.5px at 5% 50%, #ffb347, transparent),
+    radial-gradient(2px 2px at 62% 35%, #ff9a3c, transparent),
+    radial-gradient(1.5px 1.5px at 33% 40%, #ffd27a, transparent);
+  background-size: 100% 100%;
+  animation: hinoko 9s linear infinite;
+  opacity: .85;
+}
+@keyframes hinoko {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: .9; }
+  80% { opacity: .6; }
+  100% { transform: translateY(-40vh); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::after { animation: none; opacity: .5; }
+}
+
+button {
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+button.primary {
+  background: linear-gradient(180deg, var(--shu), var(--shu-dark));
+  color: #fff6e0;
+  border: 1px solid var(--gold);
+  font-family: var(--mincho);
+  font-weight: 700;
+  letter-spacing: .1em;
+  box-shadow: 0 2px 0 rgba(0,0,0,.4);
+}
+button.danger { color: var(--shu); }
+button.small { padding: 6px 10px; font-size: 14px; }
+input, textarea {
+  font: inherit;
+  font-size: 16px; /* iPhone で勝手に拡大しないように16px以上 */
+  color: var(--ink);
+  background: #fffaf0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 12px;
+  width: 100%;
+}
+textarea { resize: vertical; }
+
+.top { display: flex; align-items: center; justify-content: space-between; padding: 16px 0 10px; }
+.top h1 {
+  font-family: var(--brush);
+  font-size: 34px;
+  margin: 0;
+  color: var(--gold-light);
+  letter-spacing: .08em;
+  text-shadow: 0 0 12px rgba(255, 90, 31, .7), 0 2px 0 #000;
+}
+.icon-btn { border: none; background: transparent; font-size: 24px; padding: 4px 8px; color: var(--gold-light); text-shadow: 0 1px 2px #000; }
+
+/* 和紙の巻物風の入力欄 */
+.entry {
+  background: var(--paper);
+  border: 2px solid var(--lacquer);
+  outline: 1px solid var(--gold);
+  outline-offset: -6px;
+  border-radius: 4px;
+  padding: 14px;
+  display: grid;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.6);
+}
+.entry-row { display: flex; gap: 8px; align-items: flex-start; }
+.entry textarea { flex: 1; border: none; padding: 4px; background: transparent; min-height: 72px; line-height: 1.6; font-family: var(--mincho); }
+.entry textarea:focus { outline: none; }
+.entry textarea::placeholder { color: #8b7358; font-size: 14px; }
+.mic {
+  font-size: 22px; width: 52px; height: 52px; padding: 0; border-radius: 50%; flex: none;
+  background: var(--lacquer); border: 2px solid var(--gold);
+}
+.mic.listening { background: var(--shu); border-color: var(--gold-light); animation: pulse 1s infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(179, 38, 30, .35); } }
+.entry .primary { flex: none; min-width: 80px; }
+.chips { flex: 1; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 38px; }
+.chip { background: var(--chip); border: 1px solid rgba(179, 38, 30, .3); border-radius: 3px; padding: 3px 10px; font-size: 13px; }
+.chip.high { color: var(--shu); font-weight: bold; }
+.chip.low { color: var(--low); }
+
+.tabs { display: flex; gap: 6px; margin: 16px 0 10px; }
+.tab {
+  flex: 1; padding: 8px 4px; font-size: 15px;
+  font-family: var(--mincho); font-weight: 700;
+  background: rgba(18, 12, 10, .78); color: var(--gold-light);
+  border: 1px solid var(--gold);
+}
+.tab.active { background: linear-gradient(180deg, var(--shu), var(--shu-dark)); color: #fff6e0; border-color: var(--gold-light); }
+.count { font-size: 12px; opacity: .9; }
+
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.item {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--lacquer);
+  border-radius: 3px;
+  display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.5);
+}
+.item.high { border-left-color: var(--shu); }
+.item .check { flex: none; width: 28px; height: 28px; border-radius: 50%; padding: 0; margin-top: 1px; font-size: 14px; line-height: 1; background: #fffaf0; border: 2px solid var(--ink); }
+.item.done { opacity: .78; }
+.item.done .check { background: var(--shu); color: #fff6e0; border-color: var(--shu-dark); }
+.item .body { flex: 1; min-width: 0; cursor: pointer; }
+.item .title { word-break: break-word; font-family: var(--mincho); font-weight: 600; font-size: 17px; }
+.item.done .title { text-decoration: line-through; text-decoration-color: var(--shu); text-decoration-thickness: 2px; color: var(--sub); }
+.item .meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 13px; color: var(--sub); margin-top: 3px; }
+.item .meta .over { color: var(--shu); font-weight: bold; }
+.item .meta .high { color: var(--shu); font-weight: bold; }
+.item.done .meta .over, .item.done .meta .high { color: var(--sub); font-weight: normal; }
+.empty {
+  text-align: center; color: var(--gold-light); padding: 28px 0;
+  font-family: var(--mincho); text-shadow: 0 1px 3px #000;
+}
+
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  background: var(--lacquer); color: var(--gold-light);
+  border: 1px solid var(--gold);
+  padding: 10px 16px; border-radius: 4px; font-size: 14px;
+  display: flex; gap: 12px; align-items: center; max-width: calc(100% - 32px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.6);
+}
+.toast button { background: transparent; color: inherit; border-color: currentColor; padding: 2px 10px; font-size: 13px; }
+
+.dlg { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: flex-end; justify-content: center; z-index: 10; }
+.dlg[hidden], .toast[hidden] { display: none; }
+.dlg-box {
+  background: var(--paper-solid); width: 100%; max-width: 720px; max-height: 92vh; overflow: auto;
+  border-top: 3px solid var(--gold);
+  border-radius: 8px 8px 0 0; padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+  display: grid; gap: 12px;
+}
+@media (min-width: 640px) { .dlg { align-items: center; } .dlg-box { border-radius: 6px; border: 2px solid var(--gold); } }
+.dlg-box h2 { margin: 0; font-size: 22px; font-family: var(--brush); color: var(--shu-dark); }
+.dlg-box label, .dlg-box .label { display: grid; gap: 6px; font-size: 14px; color: var(--sub); font-weight: 600; }
+.dlg-box small { font-size: 12px; font-weight: normal; }
+.row { display: flex; gap: 8px; align-items: center; }
+.seg { display: flex; gap: 6px; }
+.seg button { flex: 1; }
+.seg button.on { background: var(--shu); color: #fff6e0; border-color: var(--shu-dark); }
+.dlg-actions { display: flex; gap: 8px; align-items: center; }
+.spacer { flex: 1; }

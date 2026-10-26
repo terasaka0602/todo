@@ -181,7 +181,7 @@
 
   function renderItem(it, t) {
     var li = document.createElement('li');
-    li.className = 'item' + (it.done ? ' done' : '');
+    li.className = 'item' + (it.done ? ' done' : '') + (!it.done && it.priority === 'high' ? ' high' : '');
 
     var check = document.createElement('button');
     check.className = 'check';

@@ -1,6 +1,6 @@
 // ネットが無くてもアプリを開けるようにする。中身を直したら VERSION の数字を上げる。
-var VERSION = 'todo-v1';
-var FILES = ['./', 'index.html', 'style.css', 'parser.js', 'app.js', 'manifest.webmanifest', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
+var VERSION = 'todo-v2';
+var FILES = ['./', 'index.html', 'style-sengoku.css', 'bg-sengoku.svg', 'parser.js', 'app.js', 'manifest.webmanifest', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(FILES); }));
